@@ -17,10 +17,19 @@ function getComputerChoice() {
 
 function getPlayerChoice() {
     let playerChoice = prompt("Enter Rock, Paper, or Scissors:");
+    console.log(playerChoice);
+    if (playerChoice === null) {
+        alert("You have canceled the game.");
+        return;
+    }
     playerChoice = 
         playerChoice.charAt(0).toUpperCase() + 
         playerChoice.slice(1).toLocaleLowerCase();
-    return playerChoice;
+    if (playerChoice) {
+        return playerChoice;
+    } else {
+        alert("You have canceled the game.");
+    }
 }
 
 function playRound(playerChoice, computerChoice) {

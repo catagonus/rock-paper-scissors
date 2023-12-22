@@ -73,3 +73,19 @@ function game() {
         console.log(`The computer wins with a score of ${5 - gameScore} out of 5. Better luck next time!`);
     }
 }
+
+function customGame() {
+    let numberOfGames = +prompt("How many games would you like to play?");
+    let gameScore = 0;
+    console.log(numberOfGames);
+    console.log(typeof numberOfGames);
+    for (let i=0; i<numberOfGames; i++) {
+        gameScore += playRound(getPlayerChoice(), getComputerChoice());
+    } if (gameScore === (numberOfGames/2)) {
+        console.log("Congratulations! The result is a friendly tie.");
+    } else if (gameScore > (numberOfGames / 2)) {
+        console.log(`The player wins with a score of ${gameScore} out of ${numberOfGames}. Congratulations!`);
+    } else {
+        console.log(`The computer wins with a score of ${numberOfGames - gameScore} out of ${numberOfGames}. Better luck next time!`);
+    }
+}

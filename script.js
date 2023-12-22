@@ -34,26 +34,26 @@ function playRound(playerChoice, computerChoice) {
     } else if (playerChoice === "Rock") {
         if (computerChoice === "Scissors") {
             console.log("Result: player victory");
-            return "You win! Rock beats scissors";
+            return 1;
         } else {
             console.log("Result: computer victory");
-            return "You lose! Paper beats rock"
+            return 0;
         }
     } else if (playerChoice === "Paper") {
         if (computerChoice === "Rock") {
             console.log("Result: player victory");
-            return "You win! Paper beats rock.";
+            return 1;
         } else {
             console.log("Result: computer victory");
-            return "You lose! Scissors beat paper."
+            return 0;
         }
     } else if (playerChoice === "Scissors") {
         if (computerChoice === "Paper") {
             console.log("Result: player victory");
-            return "You win! Scissors beat paper.";
+            return 1;
         } else {
             console.log("Result: computer victory");
-            return "You lose! Rock beats scissors."
+            return 0;
         }
     } else {
         console.log("Result: player entered invalid choice");
@@ -63,7 +63,13 @@ function playRound(playerChoice, computerChoice) {
 }
 
 function game() {
+    let gameScore = 0;
     for (let i=0; i<5; i++) {
-        console.log(playRound(getPlayerChoice(), getComputerChoice()));
+        gameScore += playRound(getPlayerChoice(), getComputerChoice());
+    }
+    if (gameScore >= 3) {
+        console.log(`The player wins with a score of ${gameScore} out of 5. Congratulations!`);
+    } else {
+        console.log(`The computer wins with a score of ${5 - gameScore} out of 5. Better luck next time!`);
     }
 }

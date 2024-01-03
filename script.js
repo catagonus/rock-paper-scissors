@@ -17,26 +17,25 @@ function getComputerChoice() {
 
 function getPlayerChoice() {
     let playerChoice = prompt("Enter Rock, Paper, or Scissors:");
-    console.log(playerChoice);
-    if (playerChoice === null) {
-        alert("You have canceled the game.");
-        return;
-    }
-    playerChoice = 
-        playerChoice.charAt(0).toUpperCase() + 
-        playerChoice.slice(1).toLocaleLowerCase();
+    //console.log(playerChoice);
+    
     if (playerChoice) {
-        return playerChoice;
-    } else {
-        alert("You have canceled the game.");
+        playerChoice = 
+            playerChoice.charAt(0).toUpperCase() + 
+            playerChoice.slice(1).toLocaleLowerCase();
     }
+    return playerChoice;
+    
 }
 
 function playRound(playerChoice, computerChoice) {
     console.log(`Player choice: ${playerChoice}`);
     console.log(`Computer choice: ${computerChoice}`);
 
-    if (playerChoice === computerChoice) {
+    if (playerChoice === null) {
+        //console.log("Game has been canceled.");
+        return null;
+    } else if (playerChoice === computerChoice) {
         console.log("Result: tie");
         alert("You tied! Try again.");
         return playRound(getPlayerChoice(), getComputerChoice());
@@ -73,8 +72,16 @@ function playRound(playerChoice, computerChoice) {
 
 function game() {
     let gameScore = 0;
+    let scoreAdd = 0;
     for (let i=0; i<5; i++) {
-        gameScore += playRound(getPlayerChoice(), getComputerChoice());
+        scoreAdd = playRound(getPlayerChoice(), getComputerChoice());
+        if (scoreAdd !== null) {
+            gameScore += scoreAdd;
+        } else {
+            alert("The game has been canceled.");
+            console.log("The game has been canceled.");
+            return;
+        }
     }
     if (gameScore >= 3) {
         console.log(`The player wins with a score of ${gameScore} out of 5. Congratulations!`);
@@ -89,8 +96,17 @@ function customGame() {
     console.log(numberOfGames);
     console.log(typeof numberOfGames);
     for (let i=0; i<numberOfGames; i++) {
-        gameScore += playRound(getPlayerChoice(), getComputerChoice());
-    } if (gameScore === (numberOfGames/2)) {
+        scoreAdd = playRound(getPlayerChoice(), getComputerChoice());
+        if (scoreAdd !== null) {
+            gameScore += scoreAdd;
+        } else {
+            alert("The game has been canceled.");
+            console.log("The game has been canceled.");
+            return;
+        }
+    } 
+    
+    if (gameScore === (numberOfGames/2)) {
         console.log("Congratulations! The result is a friendly tie.");
     } else if (gameScore > (numberOfGames / 2)) {
         console.log(`The player wins with a score of ${gameScore} out of ${numberOfGames}. Congratulations!`);

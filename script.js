@@ -1,116 +1,122 @@
+const playbuttons = document.querySelectorAll('.playbutton');
+
+const results = document.querySelector('#results');
+
+const playerScore = document.querySelector('#playerScore');
+const computerScore = document.querySelector('#computerScore');
+
+const replayButton = document.querySelector('#playAgain');
+replayButton.style.display = 'none';
+
+playbuttons.forEach( button => {
+    button.addEventListener('click', playRound);
+})
+
 function getComputerChoice() {
     const computerChoice = Math.floor(Math.random() * 3) + 1;
     switch (computerChoice) {
         case 1:
-            return "Rock";
+            return "rock";
             break;
         case 2:
-            return "Paper";
+            return "paper";
             break;
         case 3:
-            return "Scissors";
+            return "scissors";
             break;
         default:
             return "Error in computer choice.";
     }
 }
 
-function getPlayerChoice() {
-    let playerChoice = prompt("Enter Rock, Paper, or Scissors:");
-    //console.log(playerChoice);
-    
-    if (playerChoice) {
-        playerChoice = 
-            playerChoice.charAt(0).toUpperCase() + 
-            playerChoice.slice(1).toLocaleLowerCase();
-    }
-    return playerChoice;
-    
-}
+function playRound(e) {
 
-function playRound(playerChoice, computerChoice) {
-    console.log(`Player choice: ${playerChoice}`);
-    console.log(`Computer choice: ${computerChoice}`);
+    while (results.hasChildNodes()) results.removeChild(results.firstChild);
 
-    if (playerChoice === null) {
-        //console.log("Game has been canceled.");
-        return null;
-    } else if (playerChoice === computerChoice) {
-        console.log("Result: tie");
-        alert("You tied! Try again.");
-        return playRound(getPlayerChoice(), getComputerChoice());
-    } else if (playerChoice === "Rock") {
-        if (computerChoice === "Scissors") {
-            console.log("Result: player victory");
-            return 1;
+    replayButton.style.display = 'none';
+
+    playbuttons.forEach( button => {
+        button.style.display = 'inline';
+    })
+
+    document.querySelectorAll('.score').forEach(each => each.style.display = 'block');
+
+    console.log(e.target.getAttribute('id'));
+
+    const playerChoice = e.target.getAttribute('id');
+    const computerChoice = getComputerChoice();
+    console.log(computerChoice);
+    const para = document.createElement('p');
+
+    if (playerChoice === computerChoice) {
+        para.textContent = "You tied this round. Try again.";
+        results.appendChild(para);
+        
+    } else if (playerChoice === "rock") {
+        if (computerChoice === "scissors") {
+            para.textContent = "You win this round. Rock beats scissors.";
+            results.appendChild(para);
+            playerScore.textContent = +playerScore.textContent + 1;
         } else {
-            console.log("Result: computer victory");
-            return 0;
+            para.textContent = "You lose this round. Paper beats rock.";
+            results.appendChild(para);
+            computerScore.textContent = +computerScore.textContent + 1;
         }
-    } else if (playerChoice === "Paper") {
-        if (computerChoice === "Rock") {
-            console.log("Result: player victory");
-            return 1;
+    } else if (playerChoice === "paper") {
+        if (computerChoice === "rock") {
+            para.textContent = "You win this round. Paper beats rock.";
+            results.appendChild(para);
+            playerScore.textContent = + playerScore.textContent + 1;
         } else {
-            console.log("Result: computer victory");
-            return 0;
+            para.textContent = "You lose this round. Scissors beats paper.";
+            results.appendChild(para);
+            computerScore.textContent = +computerScore.textContent + 1;
         }
-    } else if (playerChoice === "Scissors") {
-        if (computerChoice === "Paper") {
-            console.log("Result: player victory");
-            return 1;
+    } else if (playerChoice === "scissors") {
+        if (computerChoice === "paper") {
+            para.textContent = "You win this round. Scissors beats paper.";
+            results.appendChild(para);
+            playerScore.textContent = +playerScore.textContent + 1;
         } else {
-            console.log("Result: computer victory");
-            return 0;
+            para.textContent = "You lose this round. Rock beats scissors.";
+            results.appendChild(para);
+            computerScore.textContent = +computerScore.textContent + 1;
         }
     } else {
         console.log("Result: player entered invalid choice");
-        alert("Please play by the rules! Enter only Rock, Paper, or Scissors.");
-        return playRound(getPlayerChoice(), getComputerChoice());
+        
+        
     }
+    console.log(`player score: ${playerScore.textContent}`);
+    console.log(`computer score: ${computerScore.textContent}`);
+
+    if (+playerScore.textContent + +computerScore.textContent === 5) {
+        const finalResult = document.createElement('h3');
+        const resultDetails = document.createElement('p');
+        if (+playerScore.textContent > +computerScore.textContent) {
+            finalResult.textContent = `VICTORY! Congratulations, you win the game with a score of ${playerScore.textContent}!`;
+        } else {
+            finalResult.textContent = `FAILURE! Better luck next time. You lose the game with a score of ${playerScore.textContent}.`;
+        }
+        resultDetails.textContent = `Final scores: Player: ${playerScore.textContent} vs. Computer: ${computerScore.textContent}`;
+
+        results.appendChild(finalResult);
+        results.appendChild(resultDetails);
+
+        document.querySelectorAll('.score').forEach(each => {
+            each.style.display = 'none';
+        });
+
+        replayButton.style.display = 'block';
+        playbuttons.forEach( button => {
+            button.style.display = 'none';
+        });
+
+        replayButton.addEventListener('click', playRound);
+        playerScore.textContent = '0';
+        computerScore.textContent = '0';
+        
+    }
+
 }
 
-function game() {
-    let gameScore = 0;
-    let scoreAdd = 0;
-    for (let i=0; i<5; i++) {
-        scoreAdd = playRound(getPlayerChoice(), getComputerChoice());
-        if (scoreAdd !== null) {
-            gameScore += scoreAdd;
-        } else {
-            alert("The game has been canceled.");
-            console.log("The game has been canceled.");
-            return;
-        }
-    }
-    if (gameScore >= 3) {
-        console.log(`The player wins with a score of ${gameScore} out of 5. Congratulations!`);
-    } else {
-        console.log(`The computer wins with a score of ${5 - gameScore} out of 5. Better luck next time!`);
-    }
-}
-
-function customGame() {
-    let numberOfGames = +prompt("How many games would you like to play?");
-    let gameScore = 0;
-    console.log(numberOfGames);
-    console.log(typeof numberOfGames);
-    for (let i=0; i<numberOfGames; i++) {
-        scoreAdd = playRound(getPlayerChoice(), getComputerChoice());
-        if (scoreAdd !== null) {
-            gameScore += scoreAdd;
-        } else {
-            alert("The game has been canceled.");
-            console.log("The game has been canceled.");
-            return;
-        }
-    } 
-    
-    if (gameScore === (numberOfGames/2)) {
-        console.log("Congratulations! The result is a friendly tie.");
-    } else if (gameScore > (numberOfGames / 2)) {
-        console.log(`The player wins with a score of ${gameScore} out of ${numberOfGames}. Congratulations!`);
-    } else {
-        console.log(`The computer wins with a score of ${numberOfGames - gameScore} out of ${numberOfGames}. Better luck next time!`);
-    }
-}

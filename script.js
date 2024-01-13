@@ -90,7 +90,7 @@ function playRound(e) {
     console.log(`player score: ${playerScore.textContent}`);
     console.log(`computer score: ${computerScore.textContent}`);
 
-    if (+playerScore.textContent + +computerScore.textContent === 5) {
+    if (+playerScore.textContent == 3 || +computerScore.textContent == 3) {
         const finalResult = document.createElement('h3');
         const resultDetails = document.createElement('p');
         if (+playerScore.textContent > +computerScore.textContent) {
